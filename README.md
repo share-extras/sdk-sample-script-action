@@ -134,15 +134,15 @@ Note: If you want the action to appear in the repository browsing pages or in We
 Usage
 -----
 
-  # Log in to Alfresco Share and navigate to any Document Library where you are a Site Collaborator or a 
-    Site Manager.
+  1. Log in to Alfresco Share and navigate to any Document Library where you are a Site Collaborator or a 
+     Site Manager.
 
-  # Locate a document in the document list view and hover over the actions list on the right hand-side
-    of the row. You should see your action in the _More..._ section when you expand this.
+  2. Locate a document in the document list view and hover over the actions list on the right hand-side
+     of the row. You should see your action in the _More..._ section when you expand this.
 
-  # If you have configured the action in the document details screen above, then click on the document 
-    in the list view to navigate to the Document Details screen. You should see the action in the list 
-    on the right hand side of the screen.
+  3. If you have configured the action in the document details screen above, then click on the document 
+     in the list view to navigate to the Document Details screen. You should see the action in the list 
+     on the right hand side of the screen.
 
 Credits
 -------
