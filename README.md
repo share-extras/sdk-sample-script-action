@@ -25,7 +25,7 @@ to Data Dictionary/Scripts and customise the action definition to use it.
 Creating Your Own Projects
 --------------------------
 
-To use the sample project, download the `sample-script-action.zip` file from the Downloads area, and use this to start a new project using Eclipse's Import wizard (select _General_ > _Existing Projects into Workspace_).
+To use the sample project, download the `sample-script-action-<version>.zip` file from the Downloads area, and use this to start a new project using Eclipse's Import wizard (select _General_ > _Existing Projects into Workspace_).
 
 Once you have created your project, it should be named _Sample Script Action_ in Eclipse. You should rename this to something of your choosing and update the corresponding JAR file name specified in `build.properties`.
 
