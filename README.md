@@ -3,24 +3,16 @@ Sample Script Action for Alfresco Share
 
 Author: Will Abson
 
-This project defines a common source directory layout, [Eclipse](http://www.eclipse.org/) 
-project configuration and [Ant](http://ant.apache.org/) build script that is used by 
-all the Share Extras add-ons, together with some sample files to help you implement 
-a basic [Document Library action](http://wiki.alfresco.com/wiki/Custom_Document_Library_Action).
+This project defines a common source directory layout, [Eclipse](http://www.eclipse.org/) project configuration and [Ant](http://ant.apache.org/) build script that is used by all the Share Extras add-ons, together with some sample files to help you implement a basic [Document Library action](http://wiki.alfresco.com/wiki/Custom_Document_Library_Action).
 
-The project provides an example Document Library action, which can be easily
-customised to run a JavaScript file of your choice when run by a 
-user.
+The project provides an example Document Library action, which can be easily customised to run a JavaScript file of your choice when run by a user.
 
 Using the Sample Project
 ------------------------
 
-The sample project is intended to help you build your own Share Document Library 
-action, using standard tools such as Eclipse and Ant.
+The sample project is intended to help you build your own Share Document Library action, using standard tools such as Eclipse and Ant.
 
-The action executes a basic [JavaScript](http://wiki.alfresco.com/wiki/JavaScript_API) 
-file when fired by the user. All you need to do is add your own JavaScript file 
-to Data Dictionary/Scripts and customise the action definition to use it.
+The action executes a basic [JavaScript](http://wiki.alfresco.com/wiki/JavaScript_API) file when fired by the user. All you need to do is add your own JavaScript file to Data Dictionary/Scripts and customise the action definition to use it.
 
 Creating Your Own Projects
 --------------------------
@@ -45,8 +37,7 @@ The folder `source/web/extras/components/documentlibrary` contains the client-si
 
 You can leave the file `sample-script-action-16.gif` untouched, or you can add your own 16x16 GIF or PNG image into the directory to represent your action. If you add your own image you will need to update the CSS file to reference this, instead of `sample-script-action-16.gif`.
 
-You will then need to edit a few variables near the beginning of 
-the renamed JS file.
+You will then need to edit a few variables near the beginning of the renamed JS file.
 
   * `JSCRIPT_NAME` should define the name of the script which you added to the repository's Data Dictionary/Scripts space.
     
@@ -97,35 +88,56 @@ Configuring Share
 
 Once the JAR file has been deployed into your application server you will need to configure the Share application to display the action.
 
-Firstly, copy the web script configuration file 
-`WEB-INF/classes/alfresco/site-webscripts/org/alfresco/components/documentlibrary/documentlist.get.config.xml` 
-from the Share webapp into the directory 
-`alfresco/web-extension/site-webscripts/org/alfresco/components/documentlibrary` in Tomcat’s `shared/classes` to override it. You should see a section 
-`<actionSet id="document">` which defines all the actions shown for a normal document in the document list view.
+### Alfresco 4.x
+
+Add the following configuration to your `share-config-custom.xml file` inside the `<alfresco-config>` element
+
+    <config evaluator="string-compare" condition="DocLibActions">
+       <actions>
+          <action id="document-sample-script" type="javascript" label="actions.document.sample-script">
+             <param name="function">onActionSampleScript</param>
+          </action>
+       </actions>
+       <actionGroups>
+          <actionGroup id="document-browse">
+             <action index="500" id="document-sample-script" />
+          </actionGroup>
+          <actionGroup id="document-details">
+             <action index="500" id="document-sample-script" />
+          </actionGroup>
+       </actionGroups>
+    </config>
+    
+    <config evaluator="string-compare" condition="DocLibCustom">
+      <dependencies>
+          <css src="/extras/components/documentlibrary/sample-script-action.css" />
+          <js src="/extras/components/documentlibrary/sample-script-action.js" />
+       </dependencies>
+    </config>
+
+### Alfresco 3.3/3.4
+
+Firstly, copy the web script configuration file `WEB-INF/classes/alfresco/site-webscripts/org/alfresco/components/documentlibrary/documentlist.get.config.xml` from the Share webapp into the directory `alfresco/web-extension/site-webscripts/org/alfresco/components/documentlibrary` in Tomcat’s `shared/classes` to override it. You should see a section `<actionSet id="document">` which defines all the actions shown for a normal document in the document list view.
 
 To add the action to this list, add the following line just before the `</actionset>` element for that block.
 
     <action type="action-link" id="onActionSampleScript" permission="edit" label="actions.document.sample-script" />
 
-Change `onActionSampleScript` to the value you specified for `FN_NAME` in the [Customisation](#Customisation) section above. Set the final part of the value for the `label` attribute to the value you 
-specified in your `MSG_BASE` definition in the client-side JavaScript.
+Change `onActionSampleScript` to the value you specified for `FN_NAME` in the [Customisation](#Customisation) section above. Set the final part of the value for the `label` attribute to the value you specified in your `MSG_BASE` definition in the client-side JavaScript.
 
 To make the action appear for folder items in addition to documents, add the same line into the section `<actionSet id="folder">`.
 
-If you also want the action to show up in the document details view, you need to copy the file `WEB-INF/classes/alfresco/site-webscripts/org/alfresco/components/document-details/document-actions.get.config.xml`
-into `alfresco/web-extension/site-webscripts/org/alfresco/components/document-details` in `shared/classes`, and add the extra `<action>` definition in the same way.
+If you also want the action to show up in the document details view, you need to copy the file `WEB-INF/classes/alfresco/site-webscripts/org/alfresco/components/document-details/document-actions.get.config.xml` into `alfresco/web-extension/site-webscripts/org/alfresco/components/document-details` in `shared/classes`, and add the extra `<action>` definition in the same way.
 
 Lastly, you need to ensure that the client-side JS and CSS assets get pulled into the UI as unfortunately the config files do not allow us to specify these dependencies.
 
-To do this, you must override the file 
-`WEB-INF/classes/alfresco/site-webscripts/org/alfresco/components/documentlibrary/actions-common.get.head.ftl`. Copy this into the directory `alfresco/web-extension/site-webscripts/org/alfresco/components/documentlibrary` in `shared/classes` and add the following lines at the bottom of the file.
+To do this, you must override the file `WEB-INF/classes/alfresco/site-webscripts/org/alfresco/components/documentlibrary/actions-common.get.head.ftl`. Copy this into the directory `alfresco/web-extension/site-webscripts/org/alfresco/components/documentlibrary` in `shared/classes` and add the following lines at the bottom of the file.
 
     <#-- Custom Script Action -->
     <@link rel="stylesheet" type="text/css" href="${page.url.context}/res/extras/components/documentlibrary/sample-script-action.css" />
     <@script type="text/javascript" src="${page.url.context}/res/extras/components/documentlibrary/sample-script-action.js"></@script>
 
-You should edit the paths above to that the links point correctly to your 
-client-side assets, as you renamed them in the [Customisation](#Customisation) section above.
+You should edit the paths above to that the links point correctly to your client-side assets, as you renamed them in the [Customisation](#Customisation) section above.
 
 Once you have made these changes you will need to restart Tomcat so that the configuration and your classpath resources in the JAR file are picked up.
 
@@ -134,15 +146,9 @@ Note: If you want the action to appear in the repository browsing pages or in We
 Usage
 -----
 
-  1. Log in to Alfresco Share and navigate to any Document Library where you are a Site Collaborator or a 
-     Site Manager.
-
-  2. Locate a document in the document list view and hover over the actions list on the right hand-side
-     of the row. You should see your action in the _More..._ section when you expand this.
-
-  3. If you have configured the action in the document details screen above, then click on the document 
-     in the list view to navigate to the Document Details screen. You should see the action in the list 
-     on the right hand side of the screen.
+  1. Log in to Alfresco Share and navigate to any Document Library where you are a Site Collaborator or a Site Manager.
+  2. Locate a document in the document list view and hover over the actions list on the right hand-side of the row. You should see your action in the _More..._ section when you expand this.
+  3. If you have configured the action in the document details screen above, then click on the document in the list view to navigate to the Document Details screen. You should see the action in the list on the right hand side of the screen.
 
 Credits
 -------
