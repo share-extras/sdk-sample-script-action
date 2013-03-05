@@ -90,7 +90,7 @@ Once the JAR file has been deployed into your application server you will need t
 
 ### Alfresco 4.x
 
-Add the following configuration to your `share-config-custom.xml file` inside the `<alfresco-config>` element
+Add the following configuration to your `share-config-custom.xml` file inside the `<alfresco-config>` element
 
     <config evaluator="string-compare" condition="DocLibActions">
        <actions>
@@ -114,6 +114,12 @@ Add the following configuration to your `share-config-custom.xml file` inside th
           <js src="/extras/components/documentlibrary/sample-script-action.js" />
        </dependencies>
     </config>
+
+Some modifications will be required to this configuration based on the changes you made in the [Customisation](#Customisation) section above.
+ 
+  * Change `onActionSampleScript` to the value you specified for `FN_NAME`. Set the final part of the value for the `label` attribute to the value you specified in your `MSG_BASE` definition in the client-side JavaScript.
+  * You should edit the dependencies paths to that the links point correctly to your client-side assets, if you renamed them.
+  * If you have multiple actions then the `id` of each of them must be unique
 
 ### Alfresco 3.3/3.4
 
